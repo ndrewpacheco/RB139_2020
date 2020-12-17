@@ -33,3 +33,5 @@ class Scrabble
     end
   end
 end
+
+puts Scrabble.score("Mateo")
