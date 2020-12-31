@@ -1,19 +1,16 @@
 # DNA
 class DNA
-  attr_reader :strand
   def initialize(strand)
     @strand = strand
   end
 
   def hamming_distance(distance)
-    max_count = [strand.size, distance.size].min
     counter = 0
-    result =  0
+    strands = [@strand, distance].sort_by(&:length)
 
-    while counter < max_count
-      result += 1 unless strand[counter] == distance[counter]
-      counter += 1
+    strands[0].chars.each_with_index do |char, idx|
+      counter += 1 unless char == strands[1].chars[idx]
     end
-    result
+    counter
   end
 end
