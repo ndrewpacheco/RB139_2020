@@ -1,37 +1,71 @@
 # secret_handshake.rb
-class SecretHandshake
-  COMMANDS = ['wink', 'double blink', 'close your eyes', 'jump'].freeze
+ONE = "1"
+ZERO = "0"
+COMMANDS = ['wink', 'double blink', 'close your eyes', 'jump'].freeze
 
+class SecretHandshake
   def initialize(num)
     @num = num.to_i
   end
 
   def commands
-    @num = format('%b', @num).chars.reverse
-    result_arr = []
+    binary_arr = []
+    binary_num = @num
+    commands_arr = []
 
-    @num.each_with_index do |digit, idx|
-      result_arr << COMMANDS[idx] if digit == '1'
+    # first determine size of binary arr
+    counter = 0
+    loop do
+      break if @num / 2**counter == 0
+      counter += 1
+      binary_arr << nil
     end
 
-    if @num.size > 4
-      result_arr.pop
-      result_arr.reverse!
+    binary_arr.map!.with_index do |item, idx|
+      counter -= 1
+      if binary_num / 2**counter == 1
+        binary_num -= 2**counter
+        ONE
+      else
+        ZERO
+      end
     end
 
-    result_arr
+    binary_arr.reverse.each_with_index do |digit, idx|
+      commands_arr << COMMANDS[idx] if digit == '1'
+    end
 
-
-
+    if binary_arr.size > 4
+      commands_arr.reject!(&:nil?)
+      commands_arr.reverse!
+    end
+    commands_arr
   end
+
+  # my first answer without manually converting integer to binary:
+
+  #   @num = format('%b', @num).chars.reverse
+  #   result_arr = []
+
+  #   @num.each_with_index do |digit, idx|
+  #     result_arr << COMMANDS[idx] if digit == '1'
+  #   end
+
+  #   if @num.size > 4
+  #     result_arr.reject!(&:nil?)
+  #     result_arr.reverse!
+  #   end
+
+  #   result_arr
+  # end
 end
 
 
-# handshake = SecretHandshake.new(1)
-# puts handshake.commands
+handshake = SecretHandshake.new(19)
+p handshake.commands
 
-# handshake = SecretHandshake.new(2)
-# puts handshake.commands
+handshake = SecretHandshake.new(31)
+p handshake.commands
 
 
   # def test_handshake_10_to_double_blink
