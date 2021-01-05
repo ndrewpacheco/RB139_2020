@@ -10,7 +10,7 @@ class Luhn
     luhn.num *= 10
     loop do
       break if luhn.valid?
-      luhn.numx += 1
+      luhn.num += 1
     end
     luhn.num
   end

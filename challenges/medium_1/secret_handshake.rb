@@ -22,7 +22,8 @@ class SecretHandshake
     end
     commands_arr
 
-    #   my first answer without manually converting integer to binary:
+    #   my first draft without manually converting integer to binary:
+
     #   @num = format('%b', @num).chars.reverse
     #   result_arr = []
 
