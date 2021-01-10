@@ -1,34 +1,33 @@
-Give us your feedback
-Protein Translation
-Lets write a program that will translate RNA sequences into proteins. RNA can be broken into three nucleotide sequences called codons, and then translated to a polypeptide like so:
+class InvalidCodonError < StandardError
+end
 
-Copy Code
-RNA: "AUGUUUUCU" => translates to
+# protein_translation.rb
+class Translation
+  AMINO_ACIDS = {
+    'Methionine' => %w(AUG),
+    'Phenylalanine' => %w(UUU UUC),
+    'Leucine' => %w(UUA UUG),
+    'Serine' => %w(UCU UCC UCA UCG),
+    'Tyrosine' => %w(UAU UAC),
+    'Cysteine' => %w(UGU UGC),
+    'Tryptophan' => %w(UGG),
+    'STOP' => %w(UAA UAG UGA)
+  }.freeze
 
-Codons: "AUG", "UUU", "UCU"
-=> which become a polypeptide with the following sequence =>
+  def self.of_codon(codon)
+    AMINO_ACIDS.select do |amino, codons|
+      return amino if codons.any?(codon)
+    end
+  end
 
-Protein: "Methionine", "Phenylalanine", "Serine"
-There are 64 codons which in turn correspond to 20 amino acids; however, all of the codon sequences and resulting amino acids are not important in this exercise.
-
-There are also four terminating codons (also known as 'STOP' codons); if any of these codons are encountered (by the ribosome), all translation ends and the protein is terminated. All subsequent codons after are ignored, like this:
-
-Copy Code
-RNA: "AUGUUUUCUUAAAUG" =>
-
-Codons: "AUG", "UUU", "UCU", "UAA", "AUG" =>
-
-Protein: "Methionine", "Phenylalanine", "Serine"
-Note the stop codon terminates the translation and the final methionine is not translated into the protein sequence.--
-
-Below are the codons and resulting Amino Acids needed for the exercise.
-
-Codon Amino Acids
-AUG Methionine
-UUU, UUC  Phenylalanine
-UUA, UUG  Leucine
-UCU, UCC, UCA, UCG  Serine
-UAU, UAC  Tyrosine
-UGU, UGC  Cysteine
-UGG Tryptophan
-UAA, UAG, UGA STOP
+  def self.of_rna(strand)
+    aminos = []
+    (strand.size / 3).times do
+      codon = of_codon(strand.slice!(0, 3))
+      break if codon == 'STOP'
+      raise InvalidCodonError unless AMINO_ACIDS.keys.include?(codon)
+      aminos << codon
+    end
+    aminos
+  end
+end
