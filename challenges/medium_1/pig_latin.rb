@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # pig_latin.rb
 class PigLatin
   def self.translate(words)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # luhn.rb
 class Luhn
   attr_accessor :num
@@ -10,6 +12,7 @@ class Luhn
     luhn.num *= 10
     loop do
       break if luhn.valid?
+
       luhn.num += 1
     end
     luhn.num

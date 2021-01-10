@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # secret_handshake.rb
-ONE = '1'.freeze
-ZERO = '0'.freeze
-COMMANDS = ['wink', 'double blink', 'close your eyes', 'jump'].freeze
-##
 class SecretHandshake
+  ONE = '1'
+  ZERO = '0'
+  COMMANDS = ['wink', 'double blink', 'close your eyes', 'jump'].freeze
+
   def initialize(num)
     @num = num.to_i
     @binary_num = @num
@@ -44,6 +46,7 @@ class SecretHandshake
     counter = 0
     loop do
       break if (@num / 2**counter).zero?
+
       counter += 1
     end
     counter
@@ -51,7 +54,7 @@ class SecretHandshake
 
   def fill(binary_arr)
     counter = find_size
-    while counter > 0
+    while counter.positive?
       counter -= 1
       if @binary_num / 2**counter == 1
         @binary_num -= 2**counter
