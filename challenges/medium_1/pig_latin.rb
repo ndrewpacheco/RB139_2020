@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
-# pig_latin.rb
+# PigLatin class
 class PigLatin
+  AY = 'ay'
+
   def self.translate(words)
-    return words + 'ay' if begins_with_vowel_sounds?(words)
+    return words + AY if begins_with_vowel_sounds?(words)
 
     words = words.split
     words.map do |word|
+      word = word.clone
       prefix = find_prefix(word)
-      word + prefix + 'ay'
+      word + prefix + AY
     end.join(' ')
   end
 

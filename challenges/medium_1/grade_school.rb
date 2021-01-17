@@ -1,22 +1,29 @@
-# Grade School
-# Write a small archiving program that stores students' names along with the grade that they are in.
+# frozen_string_literal: true
 
-# In the end, you should be able to:
+# School class
+class School
+  attr_accessor :students
+  def initialize
+    @students = {}
+  end
 
-# Add a student's name to the roster for a grade
-# "Add Jim to grade 2."
-# "OK."
-# Get a list of all students enrolled in a grade
-# "Which students are in grade 2?"
-# "We've only got Jim just now."
-# Get a sorted list of all students in all grades. Grades should sort as 1, 2, 3, etc., and students within a grade should be sorted alphabetically by name.
+  def add(name, grade)
+    if students.key?(grade)
+      students[grade] << name
+    else
+      students[grade] = [name]
+    end
+  end
 
-# Copy Code
-# {1=>["Anna", "Barb", "Charlie"], 2=>["Alex", "Peter"], ...}
-# The exact output format doesn't matter: what's important is that it shows all of the students and grades in the proper order.
+  def to_h
+    sorted_students = students.keys.sort
 
-# Note that all our students only have one name. (It's a small town, what do you want?)
+    sorted_students.map do |grade|
+      [grade, students[grade].sort!]
+    end.to_h
+  end
 
-# Test suite:
-
-# Copy Code
+  def grade(level)
+    students.key?(level) ? students[level] : []
+  end
+end

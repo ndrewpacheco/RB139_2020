@@ -3,7 +3,7 @@
 class InvalidCodonError < StandardError
 end
 
-# protein_translation.rb
+# Translation class
 class Translation
   AMINO_ACIDS = {
     'Methionine' => %w[AUG],
@@ -23,7 +23,6 @@ class Translation
   end
 
   def self.of_rna(strand)
-    strand = strand.clone
     aminos = []
     codons = strand.scan(/.{3}/)
 
