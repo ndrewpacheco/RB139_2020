@@ -1,12 +1,41 @@
+class PhoneNumber
+  INVALID_NUMBER = '0000000000'.freeze
 
-Give us your feedback
-Phone Number
-Write a program that cleans up user-entered phone numbers so that they can be sent as SMS messages.
+  def initialize(phone_number)
+    @phone_number = configure(phone_number)
+    @phone_number.delete_prefix!('1') if eleven_digits_and_starts_with_one?
+  end
 
-The rules are as follows:
+  def number
+    return INVALID_NUMBER if invalid_number?
 
-If the phone number is less than 10 digits assume that it is bad number
-If the phone number is 10 digits assume that it is good
-If the phone number is 11 digits and the first number is 1, trim the 1 and use the last 10 digits
-If the phone number is 11 digits and the first number is not 1, then it is a bad number
-If the phone number is more than 11 digits assume that it is a bad number
+    @phone_number
+  end
+
+  def area_code
+    @phone_number[0..2]
+  end
+
+  def to_s
+    "(#{area_code}) #{@phone_number[3..5]}-#{@phone_number[6..9]}"
+  end
+
+  private
+
+  def configure(phone_number)
+    phone_number.chars.select do |digit|
+      digit.match?(/\w/)
+    end.join
+  end
+
+  def eleven_digits_and_starts_with_one?
+    @phone_number.size == 11 && @phone_number[0] == '1'
+  end
+
+  def invalid_number?
+    @phone_number.size < 10 ||
+      (@phone_number.size == 11 && @phone_number[0] != '1') ||
+      @phone_number.size > 11 ||
+      @phone_number.match?(/[^\d]/)
+  end
+end
